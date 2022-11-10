@@ -10,7 +10,7 @@ public class EjemploService {
 	
 	private Saludador saludador;
 	
-	@Autowired
+	@Autowired(required = false)
 	public EjemploService(Saludador saludador) {
 		
 		this.saludador = saludador;
