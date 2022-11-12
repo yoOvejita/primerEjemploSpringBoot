@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity.HeadersBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,4 +54,5 @@ public class Primero {
 	public ResponseEntity ejemplo2(){
 		return (ResponseEntity) ResponseEntity.badRequest();
 	}
+	
 }
