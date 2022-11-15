@@ -1,9 +1,13 @@
 package com.soria.ejemplospring.Controlador;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.soria.ejemplospring.Exceptions.PersonaNoEncontradaException;
 import com.soria.ejemplospring.Models.Persona;
@@ -90,5 +95,30 @@ public class PersonaController {
 	// PostMapping(value="/persona/artificial", produces = MediaType.APPLICATION_XML_VALUE)
 	public Persona getPersona2() {
 		return new Persona(123, "Pepex","Pepper");
+	}
+	
+	@RequestMapping(value="/persona/subida", method=RequestMethod.POST, consumes= MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public String archivoSubir(@RequestParam("archivito") MultipartFile arch) throws IOException{
+		File elArchivo = new File("C:\\Users\\rusokverse\\Desktop\\" + arch.getOriginalFilename());
+		FileOutputStream fos = new FileOutputStream(elArchivo);
+		fos.write(arch.getBytes());
+		return"El archivo se recibio correctamente.";
+	}
+	
+	@RequestMapping(value="/persona/descarga", method=RequestMethod.GET)
+	public ResponseEntity<Object> descargarArchivo() throws IOException{
+		String nombreArch = "C:\\Users\\rusokverse\\Desktop\\nada.jpg";
+		File archivo = new File(nombreArch);
+		InputStreamResource recurso = new InputStreamResource(
+				new FileInputStream(archivo)
+		);
+		HttpHeaders  headers = new HttpHeaders();
+		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+		headers.add("Pragma", "no-cache");
+		headers.add("Expires", "0");
+		ResponseEntity<Object> re = ResponseEntity.ok().headers(headers).contentLength(archivo.length())
+				.contentType(MediaType.parseMediaType("application/txt")).body(recurso);
+		return re;
 	}
 }
