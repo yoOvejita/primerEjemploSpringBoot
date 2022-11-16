@@ -15,9 +15,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.soria.ejemplospring.Models.Persona;
+import com.soria.ejemplospring.Services.AutenticacionService;
+import com.soria.ejemplospring.Services.ImplProductoService;
 
 @Controller
 public class Primero {
+	// ESTA FORMA NO FUNCIONA
+	//Autowired
+	//private AutenticacionService servicio;
+	
+	// ESTA FORMA SÍ FUNCIONA: necesita registro previo
+	@Autowired
+	private ImplProductoService unServicio;
+	
 	@Value("${valor.secreto}")
 	private String val;
 	@Autowired
