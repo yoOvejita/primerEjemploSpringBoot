@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,12 +25,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.soria.ejemplospring.Exceptions.PersonaNoEncontradaException;
+import com.soria.ejemplospring.Models.Empleado;
 import com.soria.ejemplospring.Models.Persona;
+import com.soria.ejemplospring.Services.EmpleadoService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class PersonaController {
+	@Autowired
+	private EmpleadoService empServ;
+	
 	public static Map<String,Persona> personas = new HashMap<>();
 	
 	static {
@@ -41,8 +48,17 @@ public class PersonaController {
 	}
 	@RequestMapping("/persona")
 	public ResponseEntity<Object> getPersonas(){
-		return new ResponseEntity<>(personas.values(), HttpStatus.OK);
+		List<Empleado> emps = empServ.lista();
+		return new ResponseEntity<>(emps, HttpStatus.OK);
 	}
+	
+	@RequestMapping("/persona/nombre")
+	public ResponseEntity<Object> getPersonaPorNombre(){
+		//List<Empleado> emps = empServ.listaPorNombres("Samanta");
+		List<Empleado> emps = empServ.listaPorNombreApellido("Samanta", "Lima");
+		return new ResponseEntity<>(emps, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/persona", method= RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<Object> setPersona(@RequestBody Persona p) {
