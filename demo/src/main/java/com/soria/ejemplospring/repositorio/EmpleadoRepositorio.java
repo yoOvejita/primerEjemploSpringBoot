@@ -34,6 +34,6 @@ public interface EmpleadoRepositorio extends JpaRepository<Empleado, Long>{
 	
 	
 	//Manejo de booleanos
-	List<Empleado> findByCasadoTrue();
-	List<Empleado> findByCasadoFalse();
+	//List<Empleado> findByCasadoTrue();
+	//List<Empleado> findByCasadoFalse();
 }

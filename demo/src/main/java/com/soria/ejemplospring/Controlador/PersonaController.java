@@ -61,26 +61,36 @@ public class PersonaController {
 	
 	@RequestMapping(value="/persona", method= RequestMethod.POST)
 	@ResponseBody
-	public ResponseEntity<Object> setPersona(@RequestBody Persona p) {
-		personas.put(p.getId()+"", p);
-		return new ResponseEntity<>("Se creó a la persona " + p.getId(), HttpStatus.CREATED);
+	public ResponseEntity<Object> setPersona(@RequestBody Empleado p) {
+		//personas.put(p.getId()+"", p);
+		empServ.registrar(p);
+		return new ResponseEntity<>("Se creó al empleado " + p.getId(), HttpStatus.CREATED);
 	}
 	@RequestMapping(value="/persona/{id}", method= RequestMethod.PUT)
 	@ResponseBody
-	public ResponseEntity<Object> updatePersona(@PathVariable("id") int codigo, @RequestBody Persona p) {
+	public ResponseEntity<Object> updatePersona(@PathVariable("id") int codigo, @RequestBody Empleado p) {
+		/*
 		if(!personas.containsKey(codigo+""))
 			throw new PersonaNoEncontradaException();
 		personas.remove(codigo);
 		p.setId(codigo);
 		personas.put(codigo+"", p);
-		return new ResponseEntity<>("Se actualizó a la persona " + p.getId(), HttpStatus.OK);
+		*/
+		Empleado emp = empServ.hallarPorId(codigo);
+		emp.setNombre(p.getNombre());
+		emp.setApellido(p.getApellido());
+		empServ.registrar(emp);
+		
+		return new ResponseEntity<>("Se actualizó al empleado " + p.getId(), HttpStatus.OK);
 	}
 	@RequestMapping(value="/persona/{id}", method= RequestMethod.DELETE)
 	@ResponseBody
-	public ResponseEntity<Object> deletePersona(@PathVariable("id") String codigo) {
-		personas.remove(codigo);
+	public ResponseEntity<Object> deletePersona(@PathVariable("id") int codigo) {
+		//personas.remove(codigo);
+		Empleado emp = empServ.hallarPorId(codigo);
+		empServ.eliminar(emp);
 		
-		return new ResponseEntity<>("Se eliminó a la persona de ID " + codigo, HttpStatus.OK);
+		return new ResponseEntity<>("Se eliminó al empleado de ID " + codigo, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/persona/{id}")

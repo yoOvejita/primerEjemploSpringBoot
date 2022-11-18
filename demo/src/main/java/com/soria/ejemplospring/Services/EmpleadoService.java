@@ -23,4 +23,16 @@ public class EmpleadoService {
 	public List<Empleado> listaPorNombreApellido(String nom, String apellido){
 		return empleadoRepo.findByNombreAndApellido(nom, apellido);
 	}
+	public void registrar(Empleado empleado) {
+		System.out.println(">>> Se registro a " + empleado.getApellido());
+		empleadoRepo.save(empleado);
+	}
+	
+	public Empleado hallarPorId(int id) {
+		return empleadoRepo.findById(id);
+	}
+	
+	public void eliminar(Empleado empleado) {
+		empleadoRepo.delete(empleado);
+	}
 }
